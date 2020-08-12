@@ -128,7 +128,7 @@ class Indexer:
         status, result = self.client.insert(
             collection_name=self.collection,
             records=vectors,
-            params=params
+            **params
         )
         if status.code != 0:
             raise ExertMilvusException(status)
@@ -169,13 +169,20 @@ class Indexer:
         if status.code != 0:
             raise ExertMilvusException(status)
 
-    def search(self, vectors, top_count=100):
-        params= {'nprobe': 16}
+    def search(self, vectors, top_count=100, tags=None):
+        '''
+        搜索。
+        '''
+        params= {
+            'params': {'nprobe': 16}
+        }
+        if tags != None:
+            params['partition_tags'] = tags
         status, results = self.client.search(
             collection_name=self.collection,
             query_records=vectors,
             top_k=top_count,
-            params=params
+            **params
         )
         if status.code != 0:
             raise ExertMilvusException(status)
