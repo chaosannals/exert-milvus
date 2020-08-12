@@ -18,6 +18,15 @@ class Indexer:
         '''
         创建集合。
         '''
+        if lenient:
+            status, result = self.client.has_collection(
+                collection_name=self.collection
+            )
+            if status.code != 0:
+                raise ExertMilvusException(status)
+            if result:
+                return
+
         status = self.client.create_collection({
             'collection_name': self.collection,
             'dimension': 512,
@@ -49,6 +58,30 @@ class Indexer:
         )
         if status.code != 0:
             raise ExertMilvusException(status)
+
+    def flush(self):
+        '''
+        写入到硬盘。
+        '''
+        status = self.client.flush([self.collection])
+        if status.code != 0:
+            raise ExertMilvusException(status)
+
+    def compact(self):
+        '''
+        压缩集合。
+        '''
+        status = self.client.compact(
+            collection_name=self.collection
+        )
+        if status.code != 0:
+            raise ExertMilvusException(status)
+
+    def close(self):
+        '''
+        关闭链接。
+        '''
+        self.client.close()
 
     def new_tag(self, tag):
         '''
@@ -114,6 +147,17 @@ class Indexer:
             raise ExertMilvusException(status)
         return result
 
+    def counting(self):
+        '''
+        计算索引数。
+        '''
+        status, result = self.client.count_entities(
+            collection_name=self.collection
+        )
+        if status.code != 0:
+            raise ExertMilvusException(status)
+        return result
+
     def unindex(self, ids):
         '''
         去掉索引。
@@ -124,3 +168,15 @@ class Indexer:
         )
         if status.code != 0:
             raise ExertMilvusException(status)
+
+    def search(self, vectors, top_count=100):
+        params= {'nprobe': 16}
+        status, results = self.client.search(
+            collection_name=self.collection,
+            query_records=vectors,
+            top_k=top_count,
+            params=params
+        )
+        if status.code != 0:
+            raise ExertMilvusException(status)
+        return results
