@@ -1,0 +1,21 @@
+version: '3.8'
+
+services: 
+  milvus-server:
+    image: milvusdb/milvus:1.0.0-cpu-d030521-1ea92e
+    container_name: exert-milvus-server
+    ports: 
+      - 19530:19530
+      - 19121:19121
+    environment: 
+      - ./docker/db:/var/lib/milvus/db
+      - ./docker/conf:/var/lib/milvus/conf
+      - ./docker/logs:/var/lib/milvus/logs
+      - ./docker/wal:/var/lib/milvus/wal
+    networks: 
+      - exert-milvus-net
+
+networks: 
+  exert-milvus-net:
+    name: exert-milvus-net
+    driver: bridge
