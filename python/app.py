@@ -1,4 +1,3 @@
-import random
 from exert.indexer import Indexer
 from exert.vgg16 import VGG16Extractor
 
