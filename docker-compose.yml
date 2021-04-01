@@ -1,18 +1,39 @@
 version: '3.8'
 
 services: 
+  # 关联数据库服务器 milvus 目前不支持 MySQL 8.0 及其以上。
+  mysql-server:
+    image: mysql:5.7.33
+    container_name: exert-milvus-mysql-server
+    restart: always
+    ports: 
+      - 33061:3306
+      - 33062:33060
+    volumes: 
+      - ./mysql/data/:/var/lib/mysql
+      - ./mysql/file/:/var/lib/mysql-files
+      - ./mysql/conf/:/etc/mysql/:ro
+    environment: 
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=exert
+    networks: 
+      - exert-milvus-net
+
+  # 向量数据库服务器
   milvus-server:
     image: milvusdb/milvus:1.0.0-cpu-d030521-1ea92e
     container_name: exert-milvus-server
+    depends_on: 
+      - mysql-server
     restart: always
     ports: 
       - 19530:19530
       - 19121:19121
     volumes:
-      - ./docker/db:/var/lib/milvus/db
-      - ./docker/conf:/var/lib/milvus/conf
-      - ./docker/logs:/var/lib/milvus/logs
-      - ./docker/wal:/var/lib/milvus/wal
+      - ./milvus/db:/var/lib/milvus/db
+      - ./milvus/conf:/var/lib/milvus/conf
+      - ./milvus/logs:/var/lib/milvus/logs
+      - ./milvus/wal:/var/lib/milvus/wal
     networks: 
       - exert-milvus-net
 
