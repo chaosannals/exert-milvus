@@ -1,13 +1,12 @@
 from milvus import Milvus, MetricType, IndexType
 from . import ExertMilvusException
 
-
 class Indexer:
     '''
     索引器。
     '''
 
-    def __init__(self, name, host='127.0.0.1', port='19530'):
+    def __init__(self, name, host='127.0.0.1', port='19531'):
         '''
         初始化。
         '''

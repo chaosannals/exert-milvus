@@ -1,0 +1,9 @@
+POST http://127.0.0.1:9530/search HTTP/1.1
+Content-Type: multipart/form-data; boundary=----aaaaaaaaAAAAAAAAbbbbbbbbBBBBBBBB
+
+----aaaaaaaaAAAAAAAAbbbbbbbbBBBBBBBB
+Content-Disposition: form-data; name="imgs[]"; filename="ball.jpg"
+Content-Type: application/octet-stream
+
+< ball.jpg
+------aaaaaaaaAAAAAAAAbbbbbbbbBBBBBBBB--
