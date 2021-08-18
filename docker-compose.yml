@@ -27,7 +27,7 @@ services:
       - mysql-server
     restart: always
     ports: 
-      - 19531:19530
+      - 19530:19530
       - 19121:19121
     volumes:
       - ./milvus/db:/var/lib/milvus/db
@@ -75,23 +75,23 @@ services:
       ETCD_ENDPOINTS: etcd:2379
       MINIO_ADDRESS: minio:9000
     ports:
-      - "19530:19530"
+      - "19531:19530"
     depends_on:
       - "etcd"
       - "minio"
     networks: 
       - exert-milvus-net
   
-  torchpyc:
-    container_name: milvus-torchpyc
+  ptvgg16:
+    container_name: milvus-ptvgg16
     build:
-      context: ./torchpyc
+      context: ./ptvgg16
       dockerfile: dockerfile
     restart: always
     environment: 
       - MILVUS_ADDRESS=standalone:19530
     volumes: 
-      - ./torchpyc:/app
+      - ./ptvgg16:/app
     ports: 
       - 9530:9530
     depends_on: 

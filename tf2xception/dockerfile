@@ -1,0 +1,12 @@
+FROM python:3.9.6-buster
+
+VOLUME [ "/app" ]
+
+COPY ./requirements.txt /requirements.txt
+
+WORKDIR /app
+
+RUN cp /usr/share/zoneinfo/PRC /etc/localtime && \
+    pip3 install -r /requirements.txt
+
+ENTRYPOINT [ "python", "app.py" ]

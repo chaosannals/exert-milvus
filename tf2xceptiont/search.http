@@ -1,0 +1,22 @@
+POST http://127.0.0.1:9535/search_image HTTP/1.1
+Content-Type: multipart/form-data; boundary=aaaaaaaaAAAAAAAAbbbbbbbbBBBBBBBB
+
+--aaaaaaaaAAAAAAAAbbbbbbbbBBBBBBBB
+Content-Disposition: form-data; name="aaa"
+
+123456789
+--aaaaaaaaAAAAAAAAbbbbbbbbBBBBBBBB
+Content-Disposition: form-data; name="imgs[]"; filename="ball.jpg"
+Content-Type: application/octet-stream
+
+< ball.jpg
+--aaaaaaaaAAAAAAAAbbbbbbbbBBBBBBBB--
+
+
+### 查询
+POST http://127.0.0.1:9535/search_image HTTP/1.1
+Content-Type: application/json
+
+{
+    "test": 112
+}
